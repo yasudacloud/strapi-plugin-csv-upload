@@ -1,0 +1,39 @@
+{
+  "name": "strapi-plugin-csv-upload",
+  "version": "1.0.0",
+  "description": "Import CSV files into Strapi CMS",
+  "strapi": {
+    "name": "CSV Upload",
+    "description": "Import CSV files into Strapi CMS",
+    "kind": "plugin",
+    "displayName": "CSV Upload"
+  },
+  "keywords": [
+    "strapi",
+    "plugin",
+    "CSV",
+    "import"
+  ],
+  "dependencies": {},
+  "author": {
+    "name": "yasudacloud",
+    "url": "https://github.com/yasudacloud/strapi-plugin-csv-upload"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yasudacloud/strapi-plugin-csv-upload"
+  },
+  "bugs": {
+    "url": "https://github.com/yasudacloud/strapi-plugin-csv-upload/issues"
+  },
+  "maintainers": [
+    {
+      "name": "yasudacloud"
+    }
+  ],
+  "engines": {
+    "node": ">=14.19.1 <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}
