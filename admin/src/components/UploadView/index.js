@@ -85,12 +85,6 @@ export default function (props) {
     setProgresses([])
     const works = []
     for (const params of csvData) {
-      // attributes.forEach((attribute, i) => {
-      //   if(line[i]){
-      //     params[attribute[0]] = line[i]
-      //   }
-      // })
-      console.log(params)
       const response = await saveRequest(contentType.uid, params)
       works.push(response.status)
       setProgresses(works.slice())

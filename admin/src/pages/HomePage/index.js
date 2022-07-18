@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import UploadView from "../../components/UploadView";
 import {fetchContentTypeRequest} from "../../utils/http";
 import {csvFileReader} from "../../utils/fileReader";
+import {stringToContentType} from "../../utils/convert";
 
 const NavigationBar = styled.div`
   align-items: end;
@@ -52,9 +53,18 @@ const HomePage = () => {
     const selectContentType = contentTypes.find(value => value.uid === contentType)
 
     const headers = Object.keys(selectContentType.schema.attributes)
+
+    // Extract CSV file from File object
     const data = await csvFileReader(file, headers)
 
-    setCSVData(data.slice(0))
+    // Convert to the type of the respective content type
+    const attributeTypes = {}
+    for (const attribute in selectContentType.schema.attributes) {
+      attributeTypes[attribute] = selectContentType.schema.attributes[attribute].type
+    }
+    const contentTypeData = stringToContentType(data, attributeTypes)
+
+    setCSVData(contentTypeData.slice(0))
     fileRef.current.value = ''
   }
 

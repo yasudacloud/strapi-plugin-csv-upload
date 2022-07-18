@@ -1,7 +1,7 @@
 'use strict';
 const {csvToJSON} = require('./convert')
 
-describe('oauth service', () => {
+describe('csv-convert', () => {
   describe('Testing csv data', () => {
     test('Normal Test', async () => {
       const result = await csvToJSON(`

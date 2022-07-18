@@ -29,3 +29,24 @@ export async function csvToJSON(csvString, headers) {
     })
   })
 }
+
+/**
+ * @param data
+ * @param attributeTypes
+ * @returns {*}
+ */
+export function stringToContentType(data, attributeTypes) {
+  return data.map(params => {
+    const castParams = {}
+    for (const attributeName in params) {
+      if (attributeTypes[attributeName] === 'boolean') {
+        castParams[attributeName] = params[attributeName] === 'true'
+      } else if (attributeTypes[attributeName] === 'integer') {
+        castParams[attributeName] = parseInt(params[attributeName])
+      } else {
+        castParams[attributeName] = params[attributeName]
+      }
+    }
+    return castParams
+  })
+}
