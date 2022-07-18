@@ -7,6 +7,7 @@ import ContentTypeSelect from '../../components/ContentTypeSelect'
 import styled from 'styled-components'
 import UploadView from "../../components/UploadView";
 import {fetchContentTypeRequest} from "../../utils/http";
+import {csvFileReader} from "../../utils/fileReader";
 
 const NavigationBar = styled.div`
   align-items: end;
@@ -43,28 +44,18 @@ const HomePage = () => {
     fileRef.current.click()
   }, [contentType])
 
-  const onChangeFile = (e) => {
+  const onChangeFile = async (e) => {
     if (e.target.files.length === 0) {
       return
     }
     const file = e.target.files[0]
-    const fileReader = new FileReader();
-    fileReader.readAsText(file)
-    fileReader.onload = () => {
-      const lines = fileReader.result.split('\n')
-      const data = []
-      lines.forEach(line => {
-        if (!line) {
-          return
-        }
-        const newLine = line.split(',')
-        if (newLine.length > 0) {
-          data.push(newLine)
-        }
-      })
-      setCSVData(data.slice(0))
-      fileRef.current.value = ''
-    }
+    const selectContentType = contentTypes.find(value => value.uid === contentType)
+
+    const headers = Object.keys(selectContentType.schema.attributes)
+    const data = await csvFileReader(file, headers)
+
+    setCSVData(data.slice(0))
+    fileRef.current.value = ''
   }
 
   return (

@@ -84,13 +84,13 @@ export default function (props) {
     setCurrentProgress(ProgressType.Saving)
     setProgresses([])
     const works = []
-    for (const line of csvData) {
-      const params = {}
-      attributes.forEach((attribute, i) => {
-        if(line[i]){
-          params[attribute[0]] = line[i]
-        }
-      })
+    for (const params of csvData) {
+      // attributes.forEach((attribute, i) => {
+      //   if(line[i]){
+      //     params[attribute[0]] = line[i]
+      //   }
+      // })
+      console.log(params)
       const response = await saveRequest(contentType.uid, params)
       works.push(response.status)
       setProgresses(works.slice())
@@ -142,7 +142,7 @@ export default function (props) {
                         }
                       </Td>
                       {
-                        line.map((cell, cellIndex) => <Td key={cellIndex}>{cell}</Td>)
+                        Object.values(line).map((cell, cellIndex) => <Td key={cellIndex}>{cell}</Td>)
                       }
                     </Tr>
                   ))
