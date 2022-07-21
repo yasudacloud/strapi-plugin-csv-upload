@@ -9,6 +9,7 @@ import {IconButton} from '@strapi/design-system/IconButton';
 import Trash from '@strapi/icons/Trash'
 import {saveRequest} from '../../utils/http'
 import UploadViewDialog from "../UploadViewDialog";
+import {AttributeCell} from "./AttributeCell";
 
 /**
  * @type {{Complete: number, Prepare: number, Saving: number}}
@@ -96,7 +97,7 @@ export default function (props) {
   const errorCount = progresses.length - successCount
   return (
     <>
-      <ModalLayout onClose={() => onClose()} labelledBy="title">
+      <ModalLayout onClose={() => onClose()} labelledBy="" style={{width: '100%'}}>
         <ModalHeader>
           <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
             {displayName}
@@ -136,7 +137,14 @@ export default function (props) {
                         }
                       </Td>
                       {
-                        Object.values(line).map((cell, cellIndex) => <Td key={cellIndex}>{cell}</Td>)
+                        Object.values(line).map((cell, cellIndex) => (
+                          <Td key={cellIndex}>
+                            <AttributeCell
+                              value={cell}
+                              attribute={(attributes[cellIndex] && attributes[cellIndex].length > 1) ? attributes[cellIndex][1] : {}}
+                            >{cell}</AttributeCell>
+                          </Td>
+                        ))
                       }
                     </Tr>
                   ))
