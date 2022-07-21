@@ -97,7 +97,7 @@ export default function (props) {
   const errorCount = progresses.length - successCount
   return (
     <>
-      <ModalLayout onClose={() => onClose()} labelledBy="title">
+      <ModalLayout onClose={() => onClose()} labelledBy="" style={{width: '100%'}}>
         <ModalHeader>
           <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
             {displayName}

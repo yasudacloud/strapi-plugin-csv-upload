@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Validator from '../../utils/validator'
+import * as Validator from '../../utils/validator'
 
 const ErrorMessage = styled.p`
   color: #e00;
@@ -18,6 +18,12 @@ function getValidation(value, attribute) {
   if (typeof attribute.required !== 'undefined') {
     validations.push(Validator.required)
   }
+  if (typeof attribute.max !== 'undefined') {
+    validations.push(Validator.maxValue)
+  }
+  if (typeof attribute.min !== 'undefined') {
+    validations.push(Validator.minValue)
+  }
   return validations
 }
 
@@ -25,7 +31,7 @@ export const AttributeCell = (props) => {
   const {value, attribute} = props
 
   // Default Value
-  if (attribute.default && !value) {
+  if (typeof attribute.default !== 'undefined' && !value) {
     return attribute.default
   }
 

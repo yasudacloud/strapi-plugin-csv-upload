@@ -42,7 +42,12 @@ export function stringToContentType(data, attributeTypes) {
       if (attributeTypes[attributeName] === 'boolean') {
         castParams[attributeName] = params[attributeName] === 'true'
       } else if (attributeTypes[attributeName] === 'integer') {
-        castParams[attributeName] = parseInt(params[attributeName])
+        const num = parseInt(params[attributeName])
+        if(isNaN(num)){
+          castParams[attributeName] = ''
+        }else{
+          castParams[attributeName] = num
+        }
       } else {
         castParams[attributeName] = params[attributeName]
       }
