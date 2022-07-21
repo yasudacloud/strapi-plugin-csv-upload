@@ -7,6 +7,8 @@ import ContentTypeSelect from '../../components/ContentTypeSelect'
 import styled from 'styled-components'
 import UploadView from "../../components/UploadView";
 import {fetchContentTypeRequest} from "../../utils/http";
+import {csvFileReader} from "../../utils/fileReader";
+import {stringToContentType} from "../../utils/convert";
 
 const NavigationBar = styled.div`
   align-items: end;
@@ -43,28 +45,27 @@ const HomePage = () => {
     fileRef.current.click()
   }, [contentType])
 
-  const onChangeFile = (e) => {
+  const onChangeFile = async (e) => {
     if (e.target.files.length === 0) {
       return
     }
     const file = e.target.files[0]
-    const fileReader = new FileReader();
-    fileReader.readAsText(file)
-    fileReader.onload = () => {
-      const lines = fileReader.result.split('\n')
-      const data = []
-      lines.forEach(line => {
-        if (!line) {
-          return
-        }
-        const newLine = line.split(',')
-        if (newLine.length > 0) {
-          data.push(newLine)
-        }
-      })
-      setCSVData(data.slice(0))
-      fileRef.current.value = ''
+    const selectContentType = contentTypes.find(value => value.uid === contentType)
+
+    const headers = Object.keys(selectContentType.schema.attributes)
+
+    // Extract CSV file from File object
+    const data = await csvFileReader(file, headers)
+
+    // Convert to the type of the respective content type
+    const attributeTypes = {}
+    for (const attribute in selectContentType.schema.attributes) {
+      attributeTypes[attribute] = selectContentType.schema.attributes[attribute].type
     }
+    const contentTypeData = stringToContentType(data, attributeTypes)
+
+    setCSVData(contentTypeData.slice(0))
+    fileRef.current.value = ''
   }
 
   return (
