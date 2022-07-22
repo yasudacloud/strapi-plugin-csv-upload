@@ -36,6 +36,9 @@ yarn add strapi-plugin-csv-upload
 - Datetime and Email validation
 - Display messages in an easy-to-understand manner
 
+### Description
+Data registration is not Bulk Insert.
+That is, if there is an error during the request, it cannot be rolled back.
 
 
 If you have any questions or PR, please contact us here.

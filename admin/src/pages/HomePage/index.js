@@ -9,6 +9,8 @@ import UploadView from "../../components/UploadView";
 import {fetchContentTypeRequest} from "../../utils/http";
 import {csvFileReader} from "../../utils/fileReader";
 import {stringToContentType} from "../../utils/convert";
+import {onActiveContentType, onChangeContentTypes, onChangeCSVData} from '../../state/action';
+import {useDispatch, useSelector} from "react-redux";
 
 const NavigationBar = styled.div`
   align-items: end;
@@ -30,27 +32,33 @@ HideInputFile.defaultProps = {
 
 const HomePage = () => {
   const {formatMessage} = useIntl();
-  const [contentTypes, setContentTypes] = useState([])
-  const [contentType, setContentType] = useState(undefined)
-  const [csvData, setCSVData] = useState([])
+  const dispatch = useDispatch()
+  const csv = useSelector((state) => state.csvData);
+  const contentTypes = useSelector((state) => state.contentType)
   const fileRef = useRef()
+
+  const onSetCSVData = useCallback((data) => {
+    dispatch(onChangeCSVData(data))
+  }, [csv])
+
 
   useEffect(() => {
     fetchContentTypeRequest().then(response => {
-      setContentTypes(response.data.data.filter(row => row.schema.visible).slice())
+      dispatch(onChangeContentTypes(response.data.data.filter(row => row.schema.visible)))
+
     })
   }, [])
 
   const onClickFileUpload = useCallback(() => {
     fileRef.current.click()
-  }, [contentType])
+  }, [])
 
   const onChangeFile = async (e) => {
     if (e.target.files.length === 0) {
       return
     }
     const file = e.target.files[0]
-    const selectContentType = contentTypes.find(value => value.uid === contentType)
+    const selectContentType = contentTypes.data.find(value => value.uid === contentTypes.active)
 
     const headers = Object.keys(selectContentType.schema.attributes)
 
@@ -63,8 +71,7 @@ const HomePage = () => {
       attributeTypes[attribute] = selectContentType.schema.attributes[attribute].type
     }
     const contentTypeData = stringToContentType(data, attributeTypes)
-
-    setCSVData(contentTypeData.slice(0))
+    dispatch(onChangeCSVData(contentTypeData))
     fileRef.current.value = ''
   }
 
@@ -77,31 +84,30 @@ const HomePage = () => {
       <Box padding={5}>
         <NavigationBar>
           <ContentTypeSelect
-            value={contentType}
-            contentTypes={contentTypes}
+            value={contentTypes.active}
+            contentTypes={contentTypes.data}
             onChange={value => {
-              setContentType(value)
-              setCSVData([])
+              dispatch(onActiveContentType(value))
+              onSetCSVData([])
             }}
             onClear={() => {
-              setContentType(undefined)
-              setCSVData([])
+              dispatch(onActiveContentType(''))
+              onSetCSVData([])
             }}
           />
           &nbsp;
           <Button
             style={{margin: '0 0 2px 0'}}
-            disabled={!contentType}
+            disabled={!contentTypes.active}
+            variant={'secondary'}
             onClick={onClickFileUpload}
           >{formatMessage({id: 'csv-upload.Button.CSVUpload', defaultMessage: 'CSV Upload'})}</Button>
         </NavigationBar>
         {
-          contentType && csvData.length > 0 &&
+          contentTypes.active && csv.data.length > 0 &&
           <UploadView
-            contentType={contentTypes.find(value => value.uid === contentType)}
-            csvData={csvData}
-            onClose={() => setCSVData([])}
-            onRefresh={(newCSVData) => setCSVData(newCSVData.slice())}
+            contentType={contentTypes.data.find(value => value.uid === contentTypes.active)}
+            onRefresh={(newCSVData) => onSetCSVData(newCSVData)}
           />
         }
         <HideInputFile ref={fileRef} onChange={onChangeFile}/>
