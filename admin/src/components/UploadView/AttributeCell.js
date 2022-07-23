@@ -70,12 +70,5 @@ export const AttributeCell = (props) => {
 
     )
   }
-
-  return (
-    <>
-      {
-        secureTextGuard(props.children, attribute.type)
-      }
-    </>
-  )
+  return secureTextGuard(props.children, attribute.type)
 }

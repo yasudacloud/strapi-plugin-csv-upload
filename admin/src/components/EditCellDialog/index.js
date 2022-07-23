@@ -10,6 +10,7 @@ import EmailEditor from "./EmailEditor";
 import StringEditor from "./StringEditor";
 import BooleanEditor from "./BooleanEditor";
 import TimeEditor from "./TimeEditor";
+import NumberEditor from "./NumberEditor";
 
 const getEditorComponent = (type) => {
   switch (type) {
@@ -23,6 +24,12 @@ const getEditorComponent = (type) => {
       return SecureTextEditor
     case 'boolean':
       return BooleanEditor
+    case 'integer':
+      return NumberEditor
+    case 'decimal':
+      return NumberEditor
+    case 'float':
+      return NumberEditor
     case 'string':
       StringEditor.defaultProps = {
         multiline: false
@@ -69,7 +76,11 @@ export default function EditCellDialog(props) {
               onComplete={onEditCallback}
             />
           ) : (
-            <UnSupportType onClose={onDone} type={type}/>
+            <UnSupportType
+              meta={editCell.editValues}
+              onClose={onDone}
+              onComplete={onEditCallback}
+            />
           )
         }
       </DialogBody>

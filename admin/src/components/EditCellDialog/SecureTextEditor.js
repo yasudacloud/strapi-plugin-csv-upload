@@ -38,7 +38,7 @@ export default function SecureTextEditor(props) {
                     padding: 0,
                     background: 'transparent'
                   }}>
-                    <Eye aria-hidden={true}/>
+                    <Eye aria-hidden={true} style={{fontSize: 18}}/>
                   </button>
                 }
               />

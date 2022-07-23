@@ -1,10 +1,37 @@
 import {createSlice} from "@reduxjs/toolkit";
 
+export const contextData = createSlice({
+  name: 'context',
+  initialState: {
+    alert: {
+      visible: false,
+      message: ''
+    }
+  },
+  reducers: {
+    onError: (state, payloadAction) => {
+      state.alert = {
+        visible: true,
+        message: payloadAction.payload.message
+      }
+    },
+    onErrorClose: (state, payloadAction) => {
+      state.alert = {
+        visible: false,
+        message: ''
+      }
+    }
+  }
+})
+
+export const onContextError = contextData.actions.onError
+export const onContextErrorClose = contextData.actions.onErrorClose
+
 export const contentTypeData = createSlice({
   name: 'contentTypes',
   initialState: {
     active: '',
-    data: []
+    data: [],
   },
   reducers: {
     onChangeActive: (state, payloadAction) => {
@@ -61,12 +88,11 @@ export const editCellVisible = createSlice(
   }
 )
 
-// export const onChangeEditVisible = editCellVisible.actions.onChangeVisible
 export const onChangeEditValue = editCellVisible.actions.onChangeEditValue
 
 export default {
+  contextReducer: contextData.reducer,
   csvDataReducer: importCSVData.reducer,
   editCellReducer: editCellVisible.reducer,
-  contentTypeReducer: contentTypeData.reducer
+  contentTypeReducer: contentTypeData.reducer,
 }
-

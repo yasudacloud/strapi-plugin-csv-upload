@@ -40,6 +40,9 @@ export const ValidationMessages = memo((props) => {
   const isRequiredError = value === undefined || value === ''
   const isMaxLengthError = value && value.length > attribute.maxLength
   const isMinLengthError = value && value.length < attribute.minLength
+  const isMaxError = value && value > attribute.max
+  const isMinError = value && value < attribute.min
+
   const emailInValid = () => {
     try {
       Validator.email(value)
@@ -83,6 +86,22 @@ export const ValidationMessages = memo((props) => {
           <Message error={isMinLengthError}>
             <ValidateIcon error={isMinLengthError}/>&nbsp;
             <ValidateText text={`minLength: ${attribute.minLength}`}/>
+          </Message>
+        )
+      }
+      {
+        typeof attribute.max !== 'undefined' && (
+          <Message error={isMaxError}>
+            <ValidateIcon error={isMaxError}/>&nbsp;
+            <ValidateText text={`max: ${attribute.max}`}/>
+          </Message>
+        )
+      }
+      {
+        typeof attribute.min !== 'undefined' && (
+          <Message error={isMinError}>
+            <ValidateIcon error={isMinError}/>&nbsp;
+            <ValidateText text={`min: ${attribute.min}`}/>
           </Message>
         )
       }

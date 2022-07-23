@@ -13,6 +13,7 @@ import {Provider} from 'react-redux';
 import pluginId from '../../pluginId';
 import HomePage from '../HomePage';
 import store from '../../state/store'
+import AlertDialog from "../../components/AlertDialog";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path={`/plugins/${pluginId}`} component={HomePage} exact/>
           <Route component={NotFound}/>
         </Switch>
+        <AlertDialog/>
       </Provider>
     </div>
   );

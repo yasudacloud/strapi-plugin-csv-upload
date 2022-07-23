@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {useIntl} from 'react-intl';
 import styled from 'styled-components'
 import {Table, Thead, Tbody, Tr, Td, Th} from '@strapi/design-system/Table';
-import {Divider} from '@strapi/design-system/Divider';
 import {Button} from '@strapi/design-system/Button'
 import {IconButton} from '@strapi/design-system/IconButton';
 import Trash from '@strapi/icons/Trash'
@@ -22,6 +21,11 @@ const ProgressType = {
   Complete: 3
 }
 
+/**
+ * Save Response Message
+ * @param status
+ * @returns {JSX.Element|null}
+ */
 function statusToMessage(status) {
   const {formatMessage} = useIntl();
   if (!status) {
@@ -129,15 +133,14 @@ export default function (props) {
   })
   return (
     <>
-      <Divider/>
       <Button
-        style={{margin: '5px 0'}}
+        style={{margin: '10px 0 10px auto'}}
         disabled={csv.data.length === 0 || currentProgress === ProgressType.Saving}
         loading={currentProgress === ProgressType.Saving}
-        onClick={onClickSave}>{formatMessage({id: 'csv-upload.Modal.Save', defaultMessage: 'Save'})}</Button>
+        onClick={onClickSave}>{formatMessage({id: 'csv-upload.ContentType.Save', defaultMessage: 'Save'})}</Button>
 
       <Scroll>
-        <Table rowCount={1} colCount={attributes.length + 1}>
+        <Table rowCount={1} colCount={attributes.length + 2}>
           <Thead>
             <Tr>
               <Th>{''}</Th>
@@ -158,15 +161,6 @@ export default function (props) {
                     {
                       statusToMessage(progresses[lineIndex])
                     }
-                    {
-                      currentProgress === ProgressType.Prepare && <IconButton
-                        icon={<Trash/>}
-                        onClick={() => {
-                          const newCSVData = csv.data.filter((row, index) => index !== lineIndex)
-                          onRefresh(newCSVData)
-                        }}
-                      />
-                    }
                   </Td>
                   {
                     Object.values(Object.assign(initialValues, line)).map((cell, cellIndex) => {
@@ -182,6 +176,19 @@ export default function (props) {
                       )
                     })
                   }
+
+                  <Td>
+                    {
+                      currentProgress === ProgressType.Prepare && <IconButton
+                        noBorder={true}
+                        icon={<Trash/>}
+                        onClick={() => {
+                          const newCSVData = csv.data.filter((row, index) => index !== lineIndex)
+                          onRefresh(newCSVData)
+                        }}
+                      />
+                    }
+                  </Td>
                 </Tr>
               ))
             }
