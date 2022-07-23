@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {useIntl} from 'react-intl';
 import styled from 'styled-components'
 import {Table, Thead, Tbody, Tr, Td, Th} from '@strapi/design-system/Table';
@@ -11,7 +11,7 @@ import UploadViewDialog from "../UploadViewDialog";
 import {AttributeCell} from "./AttributeCell";
 import EditCellDialog from "../EditCellDialog";
 import {useDispatch, useSelector} from "react-redux";
-import {onChangeEditVisible} from "../../state/action";
+import {onChangeEditValue} from "../../state/action";
 
 /**
  * @type {{Complete: number, Prepare: number, Saving: number}}
@@ -66,7 +66,7 @@ function statusToMessage(status) {
       });
       break
   }
-  return <span style={{color: status >= 200 && status < 400 ? '#0e0' : '#e00'}}>{message}</span>
+  return <span style={{color: status >= 200 && status < 400 ? '#0a0' : '#e00'}}>{message}</span>
 }
 
 const Scroll = styled.div`
@@ -87,8 +87,6 @@ const EditableCell = styled(Td)`
 export default function (props) {
   const dispatch = useDispatch()
   const csv = useSelector((state) => state.csvData);
-
-
   const {contentType, onRefresh} = props
   const {formatMessage} = useIntl();
   const [currentProgress, setCurrentProgress] = useState(ProgressType.Prepare)
@@ -96,10 +94,9 @@ export default function (props) {
   const [showResultDialog, setResultDialog] = useState(false)
 
   const editCell = useSelector((state) => state.editCell);
-
   const attributes = Object.entries(contentType.schema.attributes)
 
-  const onClickSave = useCallback(async () => {
+  const onClickSave = async () => {
     setCurrentProgress(ProgressType.Saving)
     setProgresses([])
     const works = []
@@ -110,10 +107,26 @@ export default function (props) {
     }
     setCurrentProgress(ProgressType.Complete)
     setResultDialog(true)
-  }, [progresses])
+  }
+
+  const onClickEditCell = (value, attribute, lineIndex, contentTypeName) => {
+    dispatch(onChangeEditValue({
+      visible: true,
+      editValues: {
+        value,
+        attribute,
+        lineIndex,
+        contentTypeName
+      }
+    }))
+  }
+
   const successCount = progresses.filter(progress => progress >= 200 && progress < 300).length
   const errorCount = progresses.length - successCount
-
+  const initialValues = {}
+  attributes.forEach(attribute => {
+    initialValues[attribute[0]] = ''
+  })
   return (
     <>
       <Divider/>
@@ -156,14 +169,18 @@ export default function (props) {
                     }
                   </Td>
                   {
-                    Object.values(line).map((cell, cellIndex) => (
-                      <EditableCell key={cellIndex} onClick={() => dispatch(onChangeEditVisible(true))}>
-                        <AttributeCell
-                          value={cell}
-                          attribute={(attributes[cellIndex] && attributes[cellIndex].length > 1) ? attributes[cellIndex][1] : {}}
-                        >{cell}</AttributeCell>
-                      </EditableCell>
-                    ))
+                    Object.values(Object.assign(initialValues, line)).map((cell, cellIndex) => {
+                      const attribute = (attributes[cellIndex] && attributes[cellIndex].length > 1) ? attributes[cellIndex][1] : {}
+                      return (
+                        <EditableCell key={cellIndex}
+                                      onClick={() => onClickEditCell(cell, attribute, lineIndex, attributes[cellIndex][0])}>
+                          <AttributeCell
+                            value={cell}
+                            attribute={attribute}
+                          >{cell}</AttributeCell>
+                        </EditableCell>
+                      )
+                    })
                   }
                 </Tr>
               ))
@@ -181,14 +198,7 @@ export default function (props) {
       />
       <EditCellDialog
         visible={editCell.visible}
-        editValue={{
-          type: 'boolean',
-          value: 'true'
-        }}
-        onCancel={() => dispatch(onChangeEditVisible(false))}
-        onComplete={() => {
-          dispatch(onChangeEditVisible(false))
-        }}
+        onDone={() => dispatch(onChangeEditValue({visible: false}))}
       />
     </>
   )

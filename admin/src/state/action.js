@@ -7,7 +7,7 @@ export const contentTypeData = createSlice({
     data: []
   },
   reducers: {
-    onChangeActive: (state,payloadAction) => {
+    onChangeActive: (state, payloadAction) => {
       state.active = payloadAction.payload
     },
     onChangeContentTypes: (state, payloadAction) => {
@@ -28,11 +28,22 @@ export const importCSVData = createSlice({
     onChangeData: (state, payloadAction) => {
       state.data = payloadAction.payload
       return state
+    },
+    onEditValue: (state, payloadAction) => {
+      const {index, name, value} = payloadAction.payload
+      for (let i = 0; i < state.data.length; i++) {
+        if (i === index) {
+          state.data[i][name] = value
+          break;
+        }
+      }
+      return state
     }
   }
 })
 
 export const onChangeCSVData = importCSVData.actions.onChangeData
+export const onEditCSVCell = importCSVData.actions.onEditValue
 
 export const editCellVisible = createSlice(
   {
@@ -42,16 +53,16 @@ export const editCellVisible = createSlice(
       editValues: {}
     },
     reducers: {
-      onChangeVisible: (state) => {
-        state.visible = !state.visible
-      },
-      onChangeEditValue: (state) => {
+      onChangeEditValue: (state, payloadAction) => {
+        state = payloadAction.payload
+        return state
       }
     }
   }
 )
 
-export const onChangeEditVisible = editCellVisible.actions.onChangeVisible
+// export const onChangeEditVisible = editCellVisible.actions.onChangeVisible
+export const onChangeEditValue = editCellVisible.actions.onChangeEditValue
 
 export default {
   csvDataReducer: importCSVData.reducer,

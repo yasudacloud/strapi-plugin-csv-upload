@@ -25,7 +25,7 @@ export function maxValue(value, attribute) {
       throw new Error('Upper limit exceeded')
     }
     return floatValue
-  }else if(attribute.type === 'integer'){
+  } else if (attribute.type === 'integer') {
     const intValue = parseInt(value)
     if (intValue > attribute.max) {
       throw new Error('Upper limit exceeded')
@@ -63,5 +63,16 @@ export function minValue(value, attribute) {
 export function required(value, attribute) {
   if (value === '' || typeof value === 'undefined' || value === null) {
     throw new Error('required')
+  }
+}
+
+/**
+ * @param value
+ * @param attribute
+ */
+export function email(value, attribute) {
+  const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
+  if (!isEmail) {
+    throw new Error('Incorrect format')
   }
 }

@@ -7,16 +7,24 @@ const ErrorMessage = styled.p`
   font-size: 14px;
 `
 
+const DefaultValue = styled.span`
+  color: #888;
+  font-size: 14px;
+`
+
 function getValidation(value, attribute) {
   const validations = []
+  if (typeof attribute.required !== 'undefined') {
+    validations.push(Validator.required)
+  }
   if (typeof attribute.maxLength !== 'undefined') {
     validations.push(Validator.maxLength)
   }
   if (typeof attribute.minLength !== 'undefined') {
     validations.push(Validator.minLength)
   }
-  if (typeof attribute.required !== 'undefined') {
-    validations.push(Validator.required)
+  if (attribute.type === 'email') {
+    validations.push(Validator.email)
   }
   if (typeof attribute.max !== 'undefined') {
     validations.push(Validator.maxValue)
@@ -27,12 +35,21 @@ function getValidation(value, attribute) {
   return validations
 }
 
+const secureTextGuard = (value, type) => {
+  if (type === 'password') {
+    const password = value ? value : ''
+    return password.replace(/./g, '*')
+  } else {
+    return `${value}`
+  }
+}
+
 export const AttributeCell = (props) => {
   const {value, attribute} = props
 
   // Default Value
-  if (typeof attribute.default !== 'undefined' && !value) {
-    return attribute.default
+  if (typeof attribute.default !== 'undefined' && (typeof value === 'undefined' || value === '')) {
+    return <DefaultValue>{'Default: '}{`${attribute.default}`}</DefaultValue>
   }
 
   const validations = getValidation(value, attribute)
@@ -43,7 +60,9 @@ export const AttributeCell = (props) => {
   } catch (e) {
     return (
       <>
-        {props.children}
+        {
+          secureTextGuard(props.children, attribute.type)
+        }
         <ErrorMessage>
           {e.message}
         </ErrorMessage>
@@ -54,7 +73,9 @@ export const AttributeCell = (props) => {
 
   return (
     <>
-      {props.children}
+      {
+        secureTextGuard(props.children, attribute.type)
+      }
     </>
   )
 }
