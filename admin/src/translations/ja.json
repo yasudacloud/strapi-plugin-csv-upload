@@ -1,7 +1,6 @@
 {
   "Button.CSVUpload": "CSVアップロード",
-  "Modal.DraftDescription": "このコレクションタイプは下書きが有効になっています",
-  "Modal.Save": "保存",
+  "ContentType.Save": "保存",
   "Select.CollectionType.Label": "コレクションタイプを選択",
   "Dialog.Title": "実行結果",
   "Dialog.Close": "閉じる",

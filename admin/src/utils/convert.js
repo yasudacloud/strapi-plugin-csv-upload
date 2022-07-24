@@ -43,9 +43,9 @@ export function stringToContentType(data, attributeTypes) {
         castParams[attributeName] = params[attributeName] === 'true'
       } else if (attributeTypes[attributeName] === 'integer') {
         const num = parseInt(params[attributeName])
-        if(isNaN(num)){
+        if (isNaN(num)) {
           castParams[attributeName] = ''
-        }else{
+        } else {
           castParams[attributeName] = num
         }
       } else {
@@ -54,4 +54,30 @@ export function stringToContentType(data, attributeTypes) {
     }
     return castParams
   })
+}
+
+/**
+ * @param str
+ * @returns {string}
+ */
+function zeroPadding(str) {
+  return ('00' + str).slice(-2)
+}
+
+
+
+/**
+ * @param value
+ * @param defaultValue
+ * @returns {*}
+ */
+export function timeToFullTimeFormat(value, defaultValue) {
+  if (typeof value === 'undefined' || value === '' || !value.includes(':')) {
+    return defaultValue
+  }
+  const times = value.split(':')
+  const hour = zeroPadding(times[0])
+  const minute = zeroPadding(times[1])
+  const second = times.length > 2 ? zeroPadding(times[2]) : '00'
+  return `${hour}:${minute}:${second}.000`
 }
