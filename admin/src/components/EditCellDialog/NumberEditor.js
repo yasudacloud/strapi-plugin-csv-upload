@@ -22,7 +22,6 @@ export default function NumberEditor(props) {
               label={meta.contentTypeName}
               value={number}
               name="number"
-              onClear={() => setNumber(undefined)}
             />
             <ValidationMessages attribute={meta.attribute} value={number}/>
           </Box>
@@ -40,5 +39,4 @@ export default function NumberEditor(props) {
       />
     </>
   )
-
 }

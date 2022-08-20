@@ -163,7 +163,7 @@ export default function (props) {
                     }
                   </Td>
                   {
-                    Object.values(Object.assign(initialValues, line)).map((cell, cellIndex) => {
+                    Object.values(Object.assign({}, initialValues, line)).map((cell, cellIndex) => {
                       const attribute = (attributes[cellIndex] && attributes[cellIndex].length > 1) ? attributes[cellIndex][1] : {}
                       return (
                         <EditableCell key={cellIndex}

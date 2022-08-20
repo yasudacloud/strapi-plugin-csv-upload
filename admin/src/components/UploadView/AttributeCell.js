@@ -26,6 +26,9 @@ function getValidation(value, attribute) {
   if (attribute.type === 'email') {
     validations.push(Validator.email)
   }
+  if(attribute.type === 'enumeration'){
+    validations.push(Validator.enumeration)
+  }
   if (typeof attribute.max !== 'undefined') {
     validations.push(Validator.maxValue)
   }

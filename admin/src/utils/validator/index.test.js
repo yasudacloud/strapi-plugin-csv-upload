@@ -1,4 +1,6 @@
 'use strict';
+import {enumeration} from "./index";
+
 const {
   maxLength,
   minLength,
@@ -53,6 +55,18 @@ describe('type-validate', () => {
       maxValue(10, {max: 10, type: 'integer'})
     })
   })
+
+  test('case5 enum success', () => {
+    expect(() => {
+      enumeration('hoge', {enum: ['fuga', 'hoge']})
+    })
+  })
+  test('case5 enum not subject', () => {
+    expect(() => {
+      enumeration('hoge2', {enum: ['fuga', 'hoge']})
+    }).toThrow('Invalid value')
+  })
+
 
   test('email', () => {
     expect(() => {

@@ -76,3 +76,16 @@ export function email(value, attribute) {
     throw new Error('Incorrect format')
   }
 }
+
+/**
+ * @param value
+ * @param attribute
+ */
+export function enumeration(value, attribute) {
+  const isArray = attribute.enum && typeof attribute.enum === 'object'
+  if (isArray) {
+    if (!attribute.enum.some(enumValue => enumValue === value)) {
+      throw new Error('Invalid value')
+    }
+  }
+}
