@@ -45,7 +45,6 @@ const HomePage = () => {
     dispatch(onChangeCSVData(data))
   }, [csv])
 
-
   useEffect(() => {
     fetchContentTypeRequest().then(response => {
       dispatch(onChangeContentTypes(response.data.data.filter(row => row.schema.visible)))
@@ -63,7 +62,6 @@ const HomePage = () => {
     const file = e.target.files[0]
     const selectContentType = contentTypes.data.find(value => value.uid === contentTypes.active)
     const headers = Object.keys(selectContentType.schema.attributes)
-
     try {
       // Extract CSV file from File object
       const data = await csvFileReader(file, headers)
@@ -71,7 +69,7 @@ const HomePage = () => {
       // Convert to the type of the respective content type
       const attributeTypes = {}
       for (const attribute in selectContentType.schema.attributes) {
-        attributeTypes[attribute] = selectContentType.schema.attributes[attribute].type
+        attributeTypes[attribute] = selectContentType.schema.attributes[attribute]
       }
       const contentTypeData = stringToContentType(data, attributeTypes)
       dispatch(onChangeCSVData(contentTypeData))

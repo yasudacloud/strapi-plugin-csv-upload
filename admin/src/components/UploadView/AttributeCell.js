@@ -43,7 +43,7 @@ const secureTextGuard = (value, type) => {
     const password = value ? value : ''
     return password.replace(/./g, '*')
   } else {
-    return `${value}`
+    return typeof value === 'undefined' ? null : `${value}`
   }
 }
 

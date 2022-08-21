@@ -129,7 +129,7 @@ export default function (props) {
   const errorCount = progresses.length - successCount
   const initialValues = {}
   attributes.forEach(attribute => {
-    initialValues[attribute[0]] = ''
+    initialValues[attribute[0]] = undefined
   })
   return (
     <>

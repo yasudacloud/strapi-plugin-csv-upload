@@ -61,7 +61,7 @@ export function minValue(value, attribute) {
  * @param attribute
  */
 export function required(value, attribute) {
-  if (value === '' || typeof value === 'undefined' || value === null) {
+  if (typeof value === 'undefined' || value === null) {
     throw new Error('required')
   }
 }
