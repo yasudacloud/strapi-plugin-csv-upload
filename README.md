@@ -1,7 +1,9 @@
 <div align="center">
   <img style="width: 160px;" src="https://raw.githubusercontent.com/yasudacloud/strapi-plugin-csv-upload/main/admin/src/assets/logo_mini.png"/>
   <h1>Strapi plugin strapi-plugin-csv-upload</h1>
+  <img style="max-width:100%;" src="https://raw.githubusercontent.com/yasudacloud/strapi-plugin-csv-upload/main/admin/src/assets/screenshot2.png"/>
 </div>
+
 
 ## Installation
 
