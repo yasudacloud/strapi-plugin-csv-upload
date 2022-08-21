@@ -26,6 +26,9 @@ function getValidation(value, attribute) {
   if (attribute.type === 'email') {
     validations.push(Validator.email)
   }
+  if(attribute.type === 'enumeration'){
+    validations.push(Validator.enumeration)
+  }
   if (typeof attribute.max !== 'undefined') {
     validations.push(Validator.maxValue)
   }
@@ -40,7 +43,7 @@ const secureTextGuard = (value, type) => {
     const password = value ? value : ''
     return password.replace(/./g, '*')
   } else {
-    return `${value}`
+    return typeof value === 'undefined' ? null : `${value}`
   }
 }
 

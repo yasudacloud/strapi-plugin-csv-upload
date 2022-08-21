@@ -31,25 +31,38 @@ export async function csvToJSON(csvString, headers) {
 }
 
 /**
+ *
  * @param data
- * @param attributeTypes
+ * @param attribute
  * @returns {*}
  */
-export function stringToContentType(data, attributeTypes) {
+export function stringToContentType(data, attribute) {
   return data.map(params => {
     const castParams = {}
-    for (const attributeName in params) {
-      if (attributeTypes[attributeName] === 'boolean') {
-        castParams[attributeName] = params[attributeName] === 'true'
-      } else if (attributeTypes[attributeName] === 'integer') {
-        const num = parseInt(params[attributeName])
+    for (const name in params) {
+      const {type} = attribute[name]
+      const isDefault = typeof params[name] === 'undefined' && typeof attribute[name].default === 'undefined'
+      const value = isDefault ? attribute[name].default : params[name]
+      if (type === 'boolean') {
+        castParams[name] = value === 'true'
+      } else if (type === 'integer') {
+        const num = parseInt(value)
         if (isNaN(num)) {
-          castParams[attributeName] = ''
+          castParams[name] = undefined
         } else {
-          castParams[attributeName] = num
+          castParams[name] = num
         }
+      } else if (type === 'decimal') {
+        const decimal = parseFloat(value)
+        if (isNaN(decimal)) {
+          castParams[name] = undefined
+        } else {
+          castParams[name] = decimal
+        }
+      } else if (type === 'string' || type === 'text') {
+        castParams[name] = value === '' ? undefined : value
       } else {
-        castParams[attributeName] = params[attributeName]
+        castParams[name] = value
       }
     }
     return castParams
@@ -63,7 +76,6 @@ export function stringToContentType(data, attributeTypes) {
 function zeroPadding(str) {
   return ('00' + str).slice(-2)
 }
-
 
 
 /**

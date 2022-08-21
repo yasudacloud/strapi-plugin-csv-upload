@@ -9,9 +9,14 @@ describe('contenttype-convert', () => {
           is_true: 'true',
           is_false: 'false',
           is_num: '123',
-          is_str: 'hoge'
+          is_str: 'hoge',
         },
-      ], {is_true: 'boolean', is_false: 'boolean', is_num: 'integer', is_str: 'string'})
+      ], {
+        is_true: {type: 'boolean'},
+        is_false: {type: 'boolean'},
+        is_num: {type: 'integer'},
+        is_str: {type: 'string'},
+      })
       expect(result).toEqual([{is_true: true, is_false: false, is_num: 123, is_str: 'hoge'}])
     })
   })

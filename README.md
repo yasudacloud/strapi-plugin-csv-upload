@@ -1,11 +1,9 @@
 <div align="center">
   <img style="width: 160px;" src="https://raw.githubusercontent.com/yasudacloud/strapi-plugin-csv-upload/main/admin/src/assets/logo_mini.png"/>
   <h1>Strapi plugin strapi-plugin-csv-upload</h1>
+  <img style="max-width:100%;" src="https://raw.githubusercontent.com/yasudacloud/strapi-plugin-csv-upload/main/admin/src/assets/screenshot2.png"/>
 </div>
 
-## ✋Version 1.x.x is a beta version
-
-1.x.x is a beta version because it has fewer features.
 
 ## Installation
 
@@ -24,6 +22,7 @@ yarn add strapi-plugin-csv-upload
 - Datetime
 - Boolean
 - Number
+- Enum
 
 ## ✊Support Type Setting
 
@@ -33,9 +32,11 @@ yarn add strapi-plugin-csv-upload
 - maximum value
 - minimum value
 
+If drafting is enabled, the required fields can also be saved.
+
 ## 🙏Not supported
 - unique constraint
-- UID, Relation,Media,Enumeration,and Component Type
+- UID, Relation,Media,and Component Type
 
 ## 📖Description
 

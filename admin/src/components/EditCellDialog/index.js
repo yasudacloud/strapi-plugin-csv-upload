@@ -11,6 +11,7 @@ import StringEditor from "./StringEditor";
 import BooleanEditor from "./BooleanEditor";
 import TimeEditor from "./TimeEditor";
 import NumberEditor from "./NumberEditor";
+import EnumEditor from "./EnumEditor";
 
 const getEditorComponent = (type) => {
   switch (type) {
@@ -30,6 +31,8 @@ const getEditorComponent = (type) => {
       return NumberEditor
     case 'float':
       return NumberEditor
+    case 'enumeration':
+      return EnumEditor
     case 'string':
       StringEditor.defaultProps = {
         multiline: false

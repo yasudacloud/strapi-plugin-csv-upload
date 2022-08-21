@@ -61,7 +61,7 @@ export function minValue(value, attribute) {
  * @param attribute
  */
 export function required(value, attribute) {
-  if (value === '' || typeof value === 'undefined' || value === null) {
+  if (typeof value === 'undefined' || value === null) {
     throw new Error('required')
   }
 }
@@ -74,5 +74,18 @@ export function email(value, attribute) {
   const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
   if (!isEmail) {
     throw new Error('Incorrect format')
+  }
+}
+
+/**
+ * @param value
+ * @param attribute
+ */
+export function enumeration(value, attribute) {
+  const isArray = attribute.enum && typeof attribute.enum === 'object'
+  if (isArray) {
+    if (!attribute.enum.some(enumValue => enumValue === value)) {
+      throw new Error('Invalid value')
+    }
   }
 }

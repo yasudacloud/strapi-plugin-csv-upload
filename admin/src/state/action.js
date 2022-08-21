@@ -58,11 +58,8 @@ export const importCSVData = createSlice({
     },
     onEditValue: (state, payloadAction) => {
       const {index, name, value} = payloadAction.payload
-      for (let i = 0; i < state.data.length; i++) {
-        if (i === index) {
-          state.data[i][name] = value
-          break;
-        }
+      if (index < state.data.length) {
+        state.data[index][name] = value
       }
       return state
     }
