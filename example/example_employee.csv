@@ -1,3 +1,3 @@
-name1,"Hello, World",hogehoge,hello@example.com,true,2022-07-24,9,11.3,1.2345
-,"Hello, World",hogehoge,hello@example.com,false,2022-07-24,10,,1.2345
+name1,"Hello, World",hogehoge,hello@example.com,true,2022-07-24,,11.3,1.2345
+,,hogehoge,hello@example.com,false,2022-07-24,10,,1.2345
 name2,"Hello, World",hogehoge,hello@example.com,,2022-07-24,21,1.0,1.2345
