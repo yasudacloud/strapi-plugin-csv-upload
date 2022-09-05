@@ -1,9 +1,9 @@
 {
   "name": "strapi-plugin-csv-upload",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Import CSV files into Strapi CMS",
   "strapi": {
-    "name": "CSV Upload",
+    "name": "csv-upload",
     "description": "Import CSV files into Strapi CMS",
     "kind": "plugin",
     "displayName": "CSV Upload"
