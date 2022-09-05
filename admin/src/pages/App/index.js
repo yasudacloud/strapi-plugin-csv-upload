@@ -6,8 +6,8 @@
  */
 
 import React from 'react';
+import {CheckPermissions, NotFound} from '@strapi/helper-plugin';
 import {Switch, Route} from 'react-router-dom';
-import {NotFound} from '@strapi/helper-plugin';
 import {Helmet} from 'react-helmet';
 import {Provider} from 'react-redux';
 import pluginId from '../../pluginId';
@@ -17,16 +17,18 @@ import AlertDialog from "../../components/AlertDialog";
 
 const App = () => {
   return (
-    <div>
-      <Provider store={store}>
-        <Helmet title={'CSV Upload'}/>
-        <Switch>
-          <Route path={`/plugins/${pluginId}`} component={HomePage} exact/>
-          <Route component={NotFound}/>
-        </Switch>
-        <AlertDialog/>
-      </Provider>
-    </div>
+    <CheckPermissions permissions={[{action: 'plugin::strapi-plugin-csv-upload.read', subject: null}]}>
+      <div>
+        <Provider store={store}>
+          <Helmet title={'CSV Upload'}/>
+          <Switch>
+            <Route path={`/plugins/${pluginId}`} component={HomePage} exact/>
+            <Route component={NotFound}/>
+          </Switch>
+          <AlertDialog/>
+        </Provider>
+      </div>
+    </CheckPermissions>
   );
 };
 

@@ -20,13 +20,7 @@ export default {
 
         return component;
       },
-      permissions: [
-        // Uncomment to set the permissions of the plugin here
-        // {
-        //   action: '', // the action name should be plugin::plugin-name.actionType
-        //   subject: null,
-        // },
-      ],
+      permissions: [{ action: 'plugin::strapi-plugin-csv-upload.read', subject: null }]
     });
     app.registerPlugin({
       id: pluginId,
